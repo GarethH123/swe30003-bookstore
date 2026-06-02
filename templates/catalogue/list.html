@@ -1,0 +1,38 @@
+{% extends "shared/base.html" %}
+{% block title %}Browse Books{% endblock %}
+{% block content %}
+<h2>Browse Books</h2>
+
+<form action="/catalogue/search" method="get" class="search-form">
+    <input type="text" name="q" placeholder="Search by title, author, or genre..."
+           value="{{ query or '' }}">
+    <button type="submit" class="btn">Search</button>
+</form>
+
+{% if query %}
+    <p>Results for "<strong>{{ query }}</strong>" — {{ books|length }} found</p>
+{% endif %}
+
+{% if books %}
+    <div class="book-grid">
+        {% for book in books %}
+        <div class="book-card">
+            <h3><a href="/catalogue/{{ book.book_id }}">{{ book.title }}</a></h3>
+            <p class="author">by {{ book.author }}</p>
+            <p class="genre">{{ book.genre }}</p>
+            <p class="price">${{ "%.2f"|format(book.price) }}</p>
+            <p class="stock">
+                {% if book.stock > 0 %}
+                    In stock ({{ book.stock }})
+                {% else %}
+                    <span class="out-of-stock">Out of stock</span>
+                {% endif %}
+            </p>
+            <a href="/catalogue/{{ book.book_id }}" class="btn btn-sm">View Details</a>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>No books found.</p>
+{% endif %}
+{% endblock %}

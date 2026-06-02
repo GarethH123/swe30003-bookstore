@@ -1,0 +1,9 @@
+{% extends "shared/base.html" %}
+{% block title %}Error{% endblock %}
+{% block content %}
+<div class="error-page">
+    <h2>Something went wrong</h2>
+    <p>{{ message }}</p>
+    <a href="/" class="btn">Go Home</a>
+</div>
+{% endblock %}

@@ -1,0 +1,62 @@
+[
+    {
+        "book_id": "b001",
+        "title": "Clean Code",
+        "author": "Robert C. Martin",
+        "genre": "Programming",
+        "price": 49.99,
+        "stock": 20,
+        "description": "A handbook of agile software craftsmanship.",
+        "isbn": "9780132350884",
+        "publisher": "Prentice Hall",
+        "year": 2008
+    },
+    {
+        "book_id": "b002",
+        "title": "Design Patterns",
+        "author": "Gang of Four",
+        "genre": "Programming",
+        "price": 59.99,
+        "stock": 15,
+        "description": "Elements of reusable object-oriented software.",
+        "isbn": "9780201633610",
+        "publisher": "Addison-Wesley",
+        "year": 1994
+    },
+    {
+        "book_id": "b003",
+        "title": "The Pragmatic Programmer",
+        "author": "Andrew Hunt",
+        "genre": "Programming",
+        "price": 54.99,
+        "stock": 18,
+        "description": "Your journey to mastery.",
+        "isbn": "9780135957059",
+        "publisher": "Addison-Wesley",
+        "year": 2019
+    },
+    {
+        "book_id": "b004",
+        "title": "Dune",
+        "author": "Frank Herbert",
+        "genre": "Science Fiction",
+        "price": 24.99,
+        "stock": 30,
+        "description": "A sweeping tale of politics, religion, and ecology on a desert planet.",
+        "isbn": "9780441013593",
+        "publisher": "Ace Books",
+        "year": 1965
+    },
+    {
+        "book_id": "b005",
+        "title": "The Great Gatsby",
+        "author": "F. Scott Fitzgerald",
+        "genre": "Classic Fiction",
+        "price": 14.99,
+        "stock": 25,
+        "description": "A story of wealth, love, and the American dream in the 1920s.",
+        "isbn": "9780743273565",
+        "publisher": "Scribner",
+        "year": 1925
+    }
+]

@@ -1,0 +1,27 @@
+{% extends "shared/base.html" %}
+{% block title %}{{ book.title }}{% endblock %}
+{% block content %}
+<div class="book-detail">
+    <h2>{{ book.title }}</h2>
+    <p><strong>Author:</strong> {{ book.author }}</p>
+    <p><strong>Genre:</strong> {{ book.genre }}</p>
+    <p><strong>Publisher:</strong> {{ book.publisher }} ({{ book.year }})</p>
+    <p><strong>ISBN:</strong> {{ book.isbn }}</p>
+    <p><strong>Price:</strong> ${{ "%.2f"|format(book.price) }}</p>
+    <p><strong>Stock:</strong>
+        {% if book.stock > 0 %}{{ book.stock }} available
+        {% else %}<span class="out-of-stock">Out of stock</span>{% endif %}
+    </p>
+    <p>{{ book.description }}</p>
+
+    {% if book.stock > 0 %}
+    <form action="/order/cart/add/{{ book.book_id }}" method="post">
+        <label for="quantity">Quantity:</label>
+        <input type="number" name="quantity" id="quantity" value="1" min="1" max="{{ book.stock }}">
+        <button type="submit" class="btn">Add to Cart</button>
+    </form>
+    {% endif %}
+
+    <a href="/catalogue/" class="btn btn-secondary">Back to Catalogue</a>
+</div>
+{% endblock %}
