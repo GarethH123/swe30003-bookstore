@@ -26,7 +26,10 @@
             <tr><th>Phone</th><td>{{ user.phone }}</td></tr>
             <tr><th>Role</th><td>{{ user.role }}</td></tr>
         </table>
-
+        <a href="/" class="btn btn-secondary w-100 mb-2"
+             style="display:block; text-align:center; margin-bottom: 8px;">
+            ← Back to Home
+        </a>
         <a href="{{ url_for('auth.logout') }}" class="btn btn-danger w-100">Logout</a>
     </div>
 </div>
