@@ -1,0 +1,143 @@
+{% extends "shared/base.html" %}
+{% block title %}Shipment Management{% endblock %}
+
+{% block content %}
+<h2>Shipment Management</h2>
+<p style="color: #666; margin-bottom: 24px;">
+    Admin view — manage dispatch and delivery of all paid orders.
+</p>
+
+{# ------------------------------------------------------------------ #}
+{# Flash messages with colour-coded styling for success vs error       #}
+{# ------------------------------------------------------------------ #}
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="flash-messages">
+        {% for category, message in messages %}
+            <div class="flash {% if category == 'error' %}flash-error{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
+{% if rows %}
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Placed At</th>
+            <th>Customer ID</th>
+            <th>Total</th>
+            <th>Shipping Address</th>
+            <th>Shipment ID</th>
+            <th>Tracking #</th>
+            <th>Dispatched At</th>
+            <th>Delivered At</th>
+            <th>Shipment Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in rows %}
+        {% set order    = row.order %}
+        {% set shipment = row.shipment %}
+
+        {# Derive current shipment status; a brand-new paid order has no
+           shipment record yet, so we treat it as 'processing' for display. #}
+        {% set s_status = shipment.status if shipment else "processing" %}
+
+        <tr>
+            {# --- Order fields (from Order dataclass) --- #}
+            <td><strong>{{ order.order_id }}</strong></td>
+            <td>{{ order.created_at }}</td>
+            <td>{{ order.user_id }}</td>
+            <td>${{ "%.2f"|format(order.total) }}</td>
+            <td>{{ order.shipping_address }}</td>
+
+            {# --- Shipment fields (from Shipment dataclass) --- #}
+            <td>{{ shipment.shipment_id if shipment else "—" }}</td>
+            <td>{{ shipment.tracking_number if shipment else "—" }}</td>
+            <td>{{ shipment.dispatched_at if shipment and shipment.dispatched_at else "—" }}</td>
+            <td>{{ shipment.delivered_at  if shipment and shipment.delivered_at  else "—" }}</td>
+
+            {# --- Status badge --- #}
+            <td>
+                {% if s_status == "processing" %}
+                    <span class="status-processing">● Processing</span>
+                {% elif s_status == "dispatched" %}
+                    <span class="status-dispatched">● Dispatched</span>
+                {% elif s_status == "delivered" %}
+                    <span class="status-delivered">● Delivered</span>
+                {% else %}
+                    {{ s_status }}
+                {% endif %}
+            </td>
+
+            {# --- Action buttons --- #}
+            <td>
+                {% if s_status == "processing" %}
+                    {# Dispatch button: available when not yet dispatched #}
+                    <form action="/shipment/dispatch/{{ order.order_id }}"
+                          method="post"
+                          style="display: inline;">
+                        <button type="submit" class="btn btn-sm"
+                                title="Mark this order as dispatched">
+                            🚚 Dispatch
+                        </button>
+                    </form>
+
+                {% elif s_status == "dispatched" %}
+                    {# Deliver button: only available after dispatch #}
+                    <form action="/shipment/deliver/{{ order.order_id }}"
+                          method="post"
+                          style="display: inline;">
+                        <button type="submit" class="btn btn-sm"
+                                title="Mark this order as delivered">
+                            ✅ Deliver
+                        </button>
+                    </form>
+
+                {% elif s_status == "delivered" %}
+                    <span style="color: #27ae60; font-size: 0.85rem;">Completed</span>
+
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{# Summary counts at the bottom #}
+<div class="stats-grid" style="margin-top: 32px;">
+    <div class="stat-card">
+        <div>Total Paid Orders</div>
+        <div class="stat-number">{{ rows | length }}</div>
+    </div>
+    <div class="stat-card">
+        <div>Awaiting Dispatch</div>
+        <div class="stat-number" style="color: #f39c12;">
+            {{ rows | selectattr("shipment", "none") | list | length
+               + rows | selectattr("shipment.status", "equalto", "processing") | list | length }}
+        </div>
+    </div>
+    <div class="stat-card">
+        <div>Dispatched</div>
+        <div class="stat-number" style="color: #2980b9;">
+            {{ rows | selectattr("shipment.status", "equalto", "dispatched") | list | length }}
+        </div>
+    </div>
+    <div class="stat-card">
+        <div>Delivered</div>
+        <div class="stat-number" style="color: #27ae60;">
+            {{ rows | selectattr("shipment.status", "equalto", "delivered") | list | length }}
+        </div>
+    </div>
+</div>
+
+{% else %}
+<p>No paid orders to display yet.</p>
+{% endif %}
+
+{% endblock %}

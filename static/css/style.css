@@ -122,3 +122,10 @@ input:focus, textarea:focus { outline: none; border-color: #2c3e50; }
 .book-detail p { margin: 8px 0; }
 .book-detail form { margin: 20px 0; display: flex; gap: 10px; align-items: center; }
 .book-detail input[type=number] { width: 80px; }
+
+/* Flash error variant */
+.flash-error {
+    background: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+}
