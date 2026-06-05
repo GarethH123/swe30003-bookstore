@@ -11,7 +11,7 @@ def admin_required(f):
     """
     Decorator that restricts a route to admin users only.
 
-    Checks session['user_role'] == 'admin'.
+    Checks session['role'] == 'admin'.
     - If the user is not logged in at all  → redirect to login page.
     - If the user is logged in but not admin → abort with 403 Forbidden.
 
@@ -27,7 +27,7 @@ def admin_required(f):
             # Not logged in — send to login
             return redirect(url_for("auth.login"))
 
-        if session.get("user_role") != "admin":
+        if session.get("role") != "admin":
             # Logged in, but not an admin
             abort(403)
 
