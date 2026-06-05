@@ -129,3 +129,39 @@ input:focus, textarea:focus { outline: none; border-color: #2c3e50; }
     border-color: #f5c6cb;
     color: #721c24;
 }
+
+/* ── Shipment table scroll wrapper ── */
+.table-scroll {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* ── Table chung: smaller font and padding ── */
+.data-table th,
+.data-table td {
+    font-size: 0.82rem;
+    padding: 8px 10px;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+/* ── Checkout/payment form wider ── */
+.form-container {
+    max-width: 640px !important;
+}
+
+/* ── Radio button fix ── */
+fieldset label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: normal;
+    margin-top: 10px;
+    cursor: pointer;
+}
+fieldset input[type="radio"] {
+    width: auto;
+    margin: 0;
+    flex-shrink: 0;
+}

@@ -12,6 +12,7 @@
 {# ------------------------------------------------------------------ #}
 
 {% if rows %}
+<div class="table-scroll">
 <table class="data-table">
     <thead>
         <tr>
@@ -97,6 +98,7 @@
         {% endfor %}
     </tbody>
 </table>
+</div>
 
 {# Summary counts at the bottom #}
 {% set ns = namespace(awaiting=0, dispatched=0, delivered=0) %}
