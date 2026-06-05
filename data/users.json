@@ -1,11 +1,21 @@
 [
     {
-        "user_id": "edb4638a-e299-4cc1-9a85-3c109b3e65db",
-        "name": "Admin",
-        "email": "admin@bookstore.com",
-        "password_hash": "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9",
-        "address": "",
-        "phone": "",
+        "user_id": "U001",
+        "name": "Bruk",
+        "email": "bruktest@gmail.com",
+        "password_hash": "scrypt:32768:8:1$ENd4tqvrywWE3Hv4$bfa4559e15185f8e18656d174d7a618294a2199f1515e3650083485280a3cd4ad255f35a196101c84d849b427272c5ba3438e0d985c6a9e7c0630cde438a0e27",
+        "address": "Melbourne",
+        "phone": "0412345678",
+        "role": "customer"
+    },
+    {
+        "user_id": "U002",
+        "name": "Admin1",
+        "email": "admin1@gmail.com",
+        "password_hash": "scrypt:32768:8:1$B2ZWxLM5vuLIwVUR$2a1804ebe53104d5e238ee1f3c8bf21e5bb8c9fac7ac289bb544e8ecd0d2795a05fd588f9605281cea924bd198c7e56912d14afea114fde2e12208e4b758bc76",
+        "address": "Melbourne",
+        "phone": "0400000000",
         "role": "admin"
     }
 ]
+
