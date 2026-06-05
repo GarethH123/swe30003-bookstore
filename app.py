@@ -19,14 +19,14 @@ app.register_blueprint(catalogue_bp)
 from blueprints.auth_routes import auth_bp
 app.register_blueprint(auth_bp)
 
-#from blueprints.order_routes import order_bp
-#app.register_blueprint(order_bp)
+from blueprints.order_routes import order_bp
+app.register_blueprint(order_bp)
 
-#from blueprints.shipment_routes import shipment_bp
-#app.register_blueprint(shipment_bp)
+from blueprints.shipment_routes import shipment_bp
+app.register_blueprint(shipment_bp)
 
-#from blueprints.stats_routes import stats_bp
-#app.register_blueprint(stats_bp)
+from blueprints.stats_routes import stats_bp
+app.register_blueprint(stats_bp)
 
 
 # Home route 
