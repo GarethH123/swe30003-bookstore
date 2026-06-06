@@ -1,7 +1,7 @@
 """
 order_routes.py - Shopping cart, checkout, place order and payment confirmation
 SWE30003 - Assignment 3
-OWNER: Person C
+
 
 Cart is stored in the Flask session as a mapping of book_id -> quantity.
 Checkout creates an Order (orders.json) and an Invoice (invoices.json).
