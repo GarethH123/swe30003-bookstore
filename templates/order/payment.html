@@ -1,0 +1,36 @@
+{% extends "shared/base.html" %}
+{% block title %}Payment{% endblock %}
+{% block content %}
+<h2>Payment</h2>
+
+<div class="payment-summary">
+    <p><strong>Order:</strong> {{ order.order_id }}</p>
+    {% if invoice %}
+    <p><strong>Invoice:</strong> {{ invoice.invoice_id }}</p>
+    {% endif %}
+    <p><strong>Amount Due:</strong> ${{ "%.2f"|format(order.total) }}</p>
+</div>
+
+<div class="payment-form">
+    <h3>Select Payment Method</h3>
+    <form action="/order/payment/{{ order.order_id }}" method="post">
+        <label class="radio-option">
+            <input type="radio" name="payment_method" value="Credit Card" required>
+            Credit Card
+        </label>
+        <label class="radio-option">
+            <input type="radio" name="payment_method" value="Gift Card">
+            Gift Card
+        </label>
+
+        <p class="form-hint">
+            Payment processing is simulated for this assignment - no real transaction is made.
+        </p>
+
+        <div class="cart-actions">
+            <a href="/order/cart" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn">Pay Now</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

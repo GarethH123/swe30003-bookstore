@@ -1,0 +1,55 @@
+{% extends "shared/base.html" %}
+{% block title %}Order Confirmation{% endblock %}
+{% block content %}
+<h2>Order Confirmation</h2>
+
+<p class="confirmation-message">Thank you. Your payment has been processed.</p>
+
+<div class="confirmation-details">
+    <h3>Order {{ order.order_id }}</h3>
+    <p><strong>Status:</strong> {{ order.status }}</p>
+    <p><strong>Payment Status:</strong> {{ order.payment_status }}</p>
+    <p><strong>Shipping Address:</strong> {{ order.shipping_address }}</p>
+    <p><strong>Placed:</strong> {{ order.created_at }}</p>
+
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Book</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in order["items"] %}
+            <tr>
+                <td>{{ item.title }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>${{ "%.2f"|format(item.unit_price) }}</td>
+                <td>${{ "%.2f"|format(item.subtotal) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3"><strong>Total</strong></td>
+                <td><strong>${{ "%.2f"|format(order.total) }}</strong></td>
+            </tr>
+        </tfoot>
+    </table>
+
+    {% if invoice %}
+    <p><strong>Invoice:</strong> {{ invoice.invoice_id }} (issued {{ invoice.issue_date }})</p>
+    {% endif %}
+    {% if receipt %}
+    <p><strong>Receipt:</strong> {{ receipt.receipt_id }}</p>
+    <p><strong>Payment Method:</strong> {{ receipt.payment_method }}</p>
+    <p><strong>Amount Paid:</strong> ${{ "%.2f"|format(receipt.amount_paid) }}</p>
+    {% endif %}
+</div>
+
+<div class="cart-actions">
+    <a href="/catalogue/" class="btn">Continue Shopping</a>
+</div>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "shared/base.html" %}
+{% block title %}Checkout{% endblock %}
+{% block content %}
+<h2>Checkout</h2>
+
+<div class="checkout-summary">
+    <h3>Order Summary</h3>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Book</th>
+                <th>Quantity</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{ item.title }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>${{ "%.2f"|format(item.subtotal) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="2"><strong>Total</strong></td>
+                <td><strong>${{ "%.2f"|format(total) }}</strong></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+<div class="checkout-form">
+    <h3>Shipping Details</h3>
+    <form action="/order/checkout" method="post">
+        <label for="shipping_address">Shipping Address <span class="required">*</span></label>
+        <textarea name="shipping_address" id="shipping_address" rows="3"
+                  required>{{ user.address if user else "" }}</textarea>
+        <p class="form-hint">This field is required and cannot be blank.</p>
+
+        <div class="cart-actions">
+            <a href="/order/cart" class="btn btn-secondary">Back to Cart</a>
+            <button type="submit" class="btn">Place Order</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

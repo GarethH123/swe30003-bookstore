@@ -16,6 +16,23 @@
         "address": "Melbourne",
         "phone": "0400000000",
         "role": "admin"
+    },
+    {
+        "user_id": "U003",
+        "name": "thirath",
+        "email": "thirath@gmail.com",
+        "password_hash": "scrypt:32768:8:1$SMNclebFplBZlIjh$a3684c0f91c0b5f3c3606ce6f23c389fa9ed827710b10b5db6ee56181d7e419c42e0c3755f4d4eaca089e1b348de4d3c9b86a48a4c75bbede752fa32187eb5ef",
+        "address": "4/gin",
+        "phone": "1234567890",
+        "role": "customer"
+    },
+    {
+        "user_id": "U004",
+        "name": "thirat",
+        "email": "1@gmail.com",
+        "password_hash": "scrypt:32768:8:1$mb7uH5AE118FwIPg$868c9af58725751d20e0cbe33e9f91f85187d3bf6f1bc8d75c820cbd8a573bccd21dc5ae30f2913d18d44fd8d0798ab9d67b9340d7ff337371d102662790be9d",
+        "address": "4/station",
+        "phone": "123456",
+        "role": "customer"
     }
 ]
-
