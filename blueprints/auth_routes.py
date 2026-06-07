@@ -14,7 +14,7 @@ def login_required(route_function):
     def wrapper(*args, **kwargs):
         if "user_id" not in session:
             flash("Please log in to access this page.", "error")
-            return redirect(url_for("auth.login"))
+            return redirect(url_for("auth.login", next=request.path))
         return route_function(*args, **kwargs)
     return wrapper
 
@@ -97,7 +97,11 @@ def login():
         session["role"] = user["role"]
 
         flash("Logged in successfully.", "success")
-        return redirect(url_for("auth.account"))
+
+        next_url = request.values.get("next")
+        if next_url and next_url.startswith("/"):
+            return redirect(next_url)
+        return redirect(url_for("index"))
 
     return render_template("auth/login.html")
 
