@@ -1,0 +1,29 @@
+[
+    {
+        "invoice_id": "INV001",
+        "order_id": "O001",
+        "user_id": "U003",
+        "issue_date": "2026-06-06T15:29:51",
+        "total": 99.98,
+        "tax": 9.09,
+        "payment_status": "paid"
+    },
+    {
+        "invoice_id": "INV002",
+        "order_id": "O002",
+        "user_id": "U004",
+        "issue_date": "2026-06-06T15:39:42",
+        "total": 49.99,
+        "tax": 4.54,
+        "payment_status": "unpaid"
+    },
+    {
+        "invoice_id": "INV003",
+        "order_id": "O003",
+        "user_id": "U004",
+        "issue_date": "2026-06-06T15:44:33",
+        "total": 49.99,
+        "tax": 4.54,
+        "payment_status": "paid"
+    }
+]

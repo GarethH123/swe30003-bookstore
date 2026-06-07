@@ -1,0 +1,20 @@
+[
+    {
+        "receipt_id": "RC001",
+        "invoice_id": "INV001",
+        "order_id": "O001",
+        "payment_id": "PAY001",
+        "amount_paid": 99.98,
+        "payment_method": "Credit Card",
+        "date": "2026-06-06T15:30:07"
+    },
+    {
+        "receipt_id": "RC002",
+        "invoice_id": "INV003",
+        "order_id": "O003",
+        "payment_id": "PAY002",
+        "amount_paid": 49.99,
+        "payment_method": "Credit Card",
+        "date": "2026-06-06T15:44:40"
+    }
+]
