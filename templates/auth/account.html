@@ -14,7 +14,9 @@
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
-                    <div class="alert alert-info">{{ message }}</div>
+                    <div class="alert {% if category == 'error' %}alert-danger{% else %}alert-success{% endif %}">
+                        {{ message }}
+                    </div>
                 {% endfor %}
             {% endif %}
         {% endwith %}
@@ -26,7 +28,10 @@
             <tr><th>Phone</th><td>{{ user.phone }}</td></tr>
             <tr><th>Role</th><td>{{ user.role }}</td></tr>
         </table>
-
+        <a href="/" class="btn btn-secondary w-100 mb-2"
+             style="display:block; text-align:center; margin-bottom: 8px;">
+            ← Back to Home
+        </a>
         <a href="{{ url_for('auth.logout') }}" class="btn btn-danger w-100">Logout</a>
     </div>
 </div>

@@ -1,36 +1,50 @@
 {% extends "shared/base.html" %}
 {% block title %}Payment{% endblock %}
 {% block content %}
-<h2>Payment</h2>
+<div class="form-container" style="max-width: 600px;">
+    <h2>Confirm &amp; Pay</h2>
 
-<div class="payment-summary">
-    <p><strong>Order:</strong> {{ order.order_id }}</p>
-    {% if invoice %}
-    <p><strong>Invoice:</strong> {{ invoice.invoice_id }}</p>
-    {% endif %}
-    <p><strong>Amount Due:</strong> ${{ "%.2f"|format(order.total) }}</p>
-</div>
+    <!-- Order summary (read-only) -->
+    <table class="data-table" style="margin-bottom: 20px;">
+        <thead>
+            <tr><th>Title</th><th>Qty</th><th>Subtotal</th></tr>
+        </thead>
+        <tbody>
+            {% for item in cart %}
+            <tr>
+                <td>{{ item.title }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>${{ "%.2f"|format(item.unit_price * item.quantity) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="2"><strong>Total</strong></td>
+                <td><strong>${{ "%.2f"|format(total) }}</strong></td>
+            </tr>
+        </tfoot>
+    </table>
 
-<div class="payment-form">
-    <h3>Select Payment Method</h3>
-    <form action="/order/payment/{{ order.order_id }}" method="post">
-        <label class="radio-option">
-            <input type="radio" name="payment_method" value="Credit Card" required>
-            Credit Card
-        </label>
-        <label class="radio-option">
-            <input type="radio" name="payment_method" value="Gift Card">
-            Gift Card
-        </label>
+    <!-- Shipping & method summary -->
+    <p><strong>Shipping to:</strong> {{ pending.shipping_address }}</p>
+    <p style="margin-top: 8px;"><strong>Payment method:</strong> {{ method_label }}</p>
 
-        <p class="form-hint">
-            Payment processing is simulated for this assignment - no real transaction is made.
-        </p>
+    <!-- Simulated payment notice (per assignment spec — no real gateway) -->
+    <div class="payment-notice" style="margin-top: 20px;">
+        ℹ️ <strong>Simulated Payment:</strong> No real transaction will be processed.
+        Clicking "Pay Now" will simulate a successful payment for demonstration purposes only.
+    </div>
 
-        <div class="cart-actions">
-            <a href="/order/cart" class="btn btn-secondary">Cancel</a>
-            <button type="submit" class="btn">Pay Now</button>
-        </div>
+    <form action="/order/payment" method="post">
+        <button type="submit" class="btn" style="margin-top: 20px; width: 100%;">
+            ✅ Pay Now (Simulated)
+        </button>
     </form>
+
+    <a href="/order/checkout" class="btn btn-secondary"
+       style="display: block; text-align: center; margin-top: 12px;">
+        ← Back to Checkout
+    </a>
 </div>
 {% endblock %}

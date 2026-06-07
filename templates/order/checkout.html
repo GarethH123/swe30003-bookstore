@@ -1,24 +1,19 @@
 {% extends "shared/base.html" %}
 {% block title %}Checkout{% endblock %}
 {% block content %}
-<h2>Checkout</h2>
+<div class="form-container" style="max-width: 600px;">
+    <h2>Checkout</h2>
 
-<div class="checkout-summary">
-    <h3>Order Summary</h3>
-    <table class="data-table">
+    <table class="data-table" style="margin-bottom: 24px;">
         <thead>
-            <tr>
-                <th>Book</th>
-                <th>Quantity</th>
-                <th>Subtotal</th>
-            </tr>
+            <tr><th>Title</th><th>Qty</th><th>Subtotal</th></tr>
         </thead>
         <tbody>
-            {% for item in items %}
+            {% for item in cart %}
             <tr>
                 <td>{{ item.title }}</td>
                 <td>{{ item.quantity }}</td>
-                <td>${{ "%.2f"|format(item.subtotal) }}</td>
+                <td>${{ "%.2f"|format(item.unit_price * item.quantity) }}</td>
             </tr>
             {% endfor %}
         </tbody>
@@ -29,20 +24,42 @@
             </tr>
         </tfoot>
     </table>
-</div>
 
-<div class="checkout-form">
-    <h3>Shipping Details</h3>
+    {% if errors %}
+    <ul class="errors">
+        {% for e in errors %}<li>{{ e }}</li>{% endfor %}
+    </ul>
+    {% endif %}
+
     <form action="/order/checkout" method="post">
-        <label for="shipping_address">Shipping Address <span class="required">*</span></label>
+        <label for="shipping_address">Shipping Address <span style="color:red;">*</span></label>
         <textarea name="shipping_address" id="shipping_address" rows="3"
-                  required>{{ user.address if user else "" }}</textarea>
-        <p class="form-hint">This field is required and cannot be blank.</p>
+                  placeholder="Enter your full delivery address"
+                  required>{{ form_data.get('shipping_address', '') }}</textarea>
 
-        <div class="cart-actions">
-            <a href="/order/cart" class="btn btn-secondary">Back to Cart</a>
-            <button type="submit" class="btn">Place Order</button>
-        </div>
+        <fieldset style="margin-top: 20px; border: 1px solid #ccc;
+                         border-radius: 4px; padding: 16px;">
+            <legend style="font-weight: bold; padding: 0 8px;">
+                Payment Method <span style="color:red;">*</span>
+            </legend>
+            <label style="font-weight: normal; display: flex;
+                          align-items: center; gap: 8px; margin-top: 8px;">
+                <input type="radio" name="payment_method" value="credit_card"
+                       {% if form_data.get('payment_method') == 'credit_card' %}checked{% endif %}
+                       required>
+                💳 Credit Card
+            </label>
+            <label style="font-weight: normal; display: flex;
+                          align-items: center; gap: 8px; margin-top: 12px;">
+                <input type="radio" name="payment_method" value="gift_card"
+                       {% if form_data.get('payment_method') == 'gift_card' %}checked{% endif %}>
+                🎁 Gift Card
+            </label>
+        </fieldset>
+
+        <button type="submit" class="btn" style="margin-top: 20px; width: 100%;">
+            Review Payment →
+        </button>
     </form>
 </div>
 {% endblock %}

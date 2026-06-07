@@ -1,0 +1,188 @@
+{% extends "shared/base.html" %}
+{% block title %}Admin Dashboard — Statistics{% endblock %}
+
+{% block content %}
+
+<h2 style="margin-bottom: 8px;">Admin Dashboard</h2>
+<p style="color: #666; margin-bottom: 28px;">
+    Real-time overview of bookstore performance based on order data.
+</p>
+
+{# ================================================================== #}
+{#  ROW 1 — KPI summary cards (uses .stats-grid / .stat-card from CSS) #}
+{# ================================================================== #}
+<div class="stats-grid">
+
+    <div class="stat-card">
+        <div style="font-size: 0.85rem; color: #888; text-transform: uppercase;
+                    letter-spacing: 0.05em;">Total Revenue</div>
+        <div class="stat-number">${{ "%.2f"|format(total_revenue) }}</div>
+        <div style="font-size: 0.8rem; color: #aaa; margin-top: 4px;">from paid orders</div>
+    </div>
+
+    <div class="stat-card">
+        <div style="font-size: 0.85rem; color: #888; text-transform: uppercase;
+                    letter-spacing: 0.05em;">Total Orders</div>
+        <div class="stat-number">{{ total_orders }}</div>
+        <div style="font-size: 0.8rem; color: #aaa; margin-top: 4px;">all statuses</div>
+    </div>
+
+    <div class="stat-card">
+        <div style="font-size: 0.85rem; color: #888; text-transform: uppercase;
+                    letter-spacing: 0.05em;">Paid Orders</div>
+        <div class="stat-number" style="color: #2980b9;">{{ paid_orders }}</div>
+        <div style="font-size: 0.8rem; color: #aaa; margin-top: 4px;">payment confirmed</div>
+    </div>
+
+    <div class="stat-card">
+        <div style="font-size: 0.85rem; color: #888; text-transform: uppercase;
+                    letter-spacing: 0.05em;">Unpaid / Pending</div>
+        <div class="stat-number" style="color: #e74c3c;">
+            {{ total_orders - paid_orders }}
+        </div>
+        <div style="font-size: 0.8rem; color: #aaa; margin-top: 4px;">awaiting payment</div>
+    </div>
+
+</div>
+
+
+{# ================================================================== #}
+{#  ROW 2 — Best Sellers + Orders by Date (side by side on wide screen) #}
+{# ================================================================== #}
+<div style="display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 24px;
+            margin-top: 32px;
+            align-items: start;">
+
+    {# ---------------------------------------------------------- #}
+    {#  LEFT — Top 3 Best Sellers                                  #}
+    {# ---------------------------------------------------------- #}
+    <section>
+        <h3 style="margin-bottom: 16px;">🏆 Top 3 Best Sellers</h3>
+
+        {% if best_sellers %}
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+            {% for book in best_sellers %}
+
+            {# Medal colours: gold / silver / bronze #}
+            {% set medals = ["🥇", "🥈", "🥉"] %}
+            {% set bar_colours = ["#f39c12", "#7f8c8d", "#cd7f32"] %}
+            {% set bar_pct = (book.units_sold / best_sellers[0].units_sold * 100) | int %}
+
+            <div style="background: white;
+                        border-radius: 8px;
+                        padding: 16px 20px;
+                        box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+
+                {# Title row #}
+                <div style="display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            margin-bottom: 8px;">
+                    <span style="font-weight: bold; font-size: 0.95rem;">
+                        {{ medals[loop.index0] }} {{ book.title }}
+                    </span>
+                    <span style="font-weight: bold; color: #27ae60; font-size: 0.9rem;">
+                        {{ book.units_sold }} sold
+                    </span>
+                </div>
+
+                {# Proportional bar #}
+                <div style="background: #ecf0f1; border-radius: 4px; height: 6px;">
+                    <div style="background: {{ bar_colours[loop.index0] }};
+                                width: {{ bar_pct }}%;
+                                height: 100%;
+                                border-radius: 4px;">
+                    </div>
+                </div>
+
+                {# Revenue sub-line #}
+                <div style="font-size: 0.8rem; color: #888; margin-top: 6px;">
+                    Revenue: ${{ "%.2f"|format(book.revenue) }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% else %}
+        <div style="background: white; border-radius: 8px; padding: 24px;
+                    text-align: center; color: #aaa; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+            No sales data yet.
+        </div>
+        {% endif %}
+    </section>
+
+
+    {# ---------------------------------------------------------- #}
+    {#  RIGHT — Orders by Date                                     #}
+    {# ---------------------------------------------------------- #}
+    <section>
+        <h3 style="margin-bottom: 16px;">📅 Orders by Date</h3>
+
+        {% if orders_by_date %}
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th style="text-align: center;">Orders Placed</th>
+                    <th style="text-align: right;">Revenue (Paid)</th>
+                    <th style="text-align: center;">Volume</th>
+                </tr>
+            </thead>
+            <tbody>
+                {# Pre-compute max count for relative bar widths #}
+                {% set max_count = orders_by_date | map(attribute='count') | max %}
+
+                {% for row in orders_by_date %}
+                {% set bar_pct = (row.count / max_count * 100) | int %}
+                <tr>
+                    <td>{{ row.date }}</td>
+
+                    <td style="text-align: center;">
+                        <strong>{{ row.count }}</strong>
+                    </td>
+
+                    <td style="text-align: right;">
+                        {% if row.revenue > 0 %}
+                            ${{ "%.2f"|format(row.revenue) }}
+                        {% else %}
+                            <span style="color: #bbb;">—</span>
+                        {% endif %}
+                    </td>
+
+                    {# Inline mini-bar to give visual sense of relative volume #}
+                    <td style="width: 120px;">
+                        <div style="background: #ecf0f1; border-radius: 3px; height: 8px;">
+                            <div style="background: #2c3e50;
+                                        width: {{ bar_pct }}%;
+                                        height: 100%;
+                                        border-radius: 3px; min-width: 4px;">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+
+            {# Totals footer row #}
+            <tfoot>
+                <tr>
+                    <td>Total</td>
+                    <td style="text-align: center;">{{ total_orders }}</td>
+                    <td style="text-align: right;">${{ "%.2f"|format(total_revenue) }}</td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+
+        {% else %}
+        <div style="background: white; border-radius: 8px; padding: 24px;
+                    text-align: center; color: #aaa; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+            No order history to display yet.
+        </div>
+        {% endif %}
+    </section>
+
+</div>
+{% endblock %}
